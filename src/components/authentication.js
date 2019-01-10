@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { signIn } from '../actions/auth';
+import { goHome } from '../actions/navigation';
 import Cookies from 'universal-cookie';
 
 class Authentication extends Component {
@@ -10,7 +11,6 @@ class Authentication extends Component {
   }
 
   handleClick() {
-    const that = this;
     signIn(
       process.env.REACT_APP_EMAIL,
       process.env.REACT_APP_PASS
@@ -18,6 +18,7 @@ class Authentication extends Component {
     then(
       user => {
         this.props.setUser( user );
+        goHome();
       }
     );
   };

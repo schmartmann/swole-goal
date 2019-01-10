@@ -3,16 +3,12 @@ import { getWorkouts } from '../actions/workouts';
 
 class Workouts extends Component {
   componentWillMount() {
-    debugger
-    this.getWorkouts();
-  }
-
-  getWorkouts() {
-    getWorkouts( this.props.user.data.headers );
+    this.getWorkouts( this.props.user.headers );
   }
   render() {
     return (
       <div className="workouts-container">
+        <h1>workouts go here</h1>
       </div>
     );
   }
