@@ -1,10 +1,10 @@
 
-export function apiRequest( userHeaders, route ) {
+export function apiRequest( userHeaders, type, route ) {
   const ROOT_URL = 'http://localhost:3001/'
 
   return fetch(
     `${ ROOT_URL }${ route }`, {
-      method: 'get',
+      method: type,
       mode: 'cors',
       headers: {
         'Access-Token': userHeaders[ 'access-token' ],
