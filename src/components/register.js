@@ -4,12 +4,11 @@ import Authentication from './authentication';
 class Register extends Component {
   render() {
     return(
-      <div>
-        <span>Register form goes here</span>
+      <div className="component-main">
         <Authentication setUser={ this.props.setUser }/>
       </div>
     )
   }
-}
+};
 
 export default Register;

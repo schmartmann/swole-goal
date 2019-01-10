@@ -1,32 +1,118 @@
-.App {
-  text-align: center;
+body {
+  font-size: 14px;
+  color: white;
+  background: #90AFC5;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.app-container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-flow: column nowrap;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  margin: 50px;
+}
+
+.navigation-container {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-content: baseline;
+  align-items: center;
+}
+
+.navigation-container a {
+  text-transform: uppercase;
+  text-decoration: none;
+  text-align: center;
+  border: 2px solid #763626;
+  border-radius: 4px;
+  height: 25px;
+  padding: 8px;
+  background: #336B87;
+  font-weight: 700;
+}
+
+.navigation-container a:visited {
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.navigation-container a:hover {
+  cursor: pointer;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.component-main {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.workouts-container {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+}
+
+.workout {
+  width: 50%;
+  height: auto;
+  margin: 16px auto;
+  background: #336B87;
+  border: 2px solid #763626;
+  border-radius: 4px;
+  padding: 8px;
+  color: white;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-content: center;
+}
+
+.workout .workout-info {
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.workout .workout-exercises div {
+  margin-top: 5px;
+  text-transform: uppercase;
+  font-size: 12px;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.workout .workout-exercises .exercise {
+  text-transform: none;
+}
+
+.workout .workout-exercises .exercises-empty {
+  text-transform: none;
+}
+
+.forms {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-field {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-field button,
+.form-field label {
+  align-self: flex-start;
 }

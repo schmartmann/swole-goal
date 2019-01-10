@@ -6,8 +6,9 @@ import Register from './components/register';
 
 import Navigation from './components/navigation';
 import Workouts from './components/workouts';
-import Exercises from './components/exercises';
 import User from './components/user';
+
+import './App.css';
 
 class App extends Component {
   constructor() {
@@ -45,18 +46,23 @@ class App extends Component {
   authenticateRouting() {
     if ( this.verifyAuth() ) {
       return(
-        <div>
+        <div className="app-container">
           <Navigation/>
-          <Route exact path="/workouts" component={ Workouts }/>
-          <Route exact path="/exercises" component={ Exercises }/>
+
+          <Route exact path="/workouts">
+            <Workouts setWorkouts={ this.setWorkouts } user={ this.state.user } workouts={ this.state.workouts } />
+          </Route>
+
           <Route exact path="/user" component={ User }/>
         </div>
       )
     } else {
       return(
-        <div>
+        <div className="app-container">
           <Route exact path="/" component={ Landing }/>
-          <Route exact path="/register" component={ Register }/>
+          <Route exact path="/register">
+            <Register setUser={ this.setUser }/>
+          </Route>
         </div>
       );
     }
