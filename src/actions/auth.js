@@ -29,19 +29,42 @@ export function signIn( user, password ) {
       password: password
     }
   ).
-  then(
-    user => {
-      const cookies = new Cookies();
-      var headers = parseHeaders( cookies );
-      cookies.set( 'sgUser', user.data.uid, { path: '/' } );
-      return bundleUserData( user, headers );
+    then(
+      user => {
+        const cookies = new Cookies();
+        var headers = parseHeaders( cookies );
+        cookies.set( 'sgUser', user.data.uid, { path: '/' } );
+        return bundleUserData( user, headers );
+      }
+    ).
+    catch(
+      error => {
+        console.log( error );
+      }
+    );
+};
+
+export function signUp( email, password, passwordConfirmation ) {
+  return Auth.emailSignUp(
+    {
+      email: email,
+      password: password,
+      password_confirmation: passwordConfirmation
     }
   ).
-  catch(
-    error => {
-      console.log( error );
-    }
-  );
+    then(
+      user => {
+        const cookies = new Cookies();
+        var headers = parseHeaders( cookies );
+        cookies.set( 'sgUser', user.data.uid, { path: '/' } );
+        return bundleUserData( user, headers );
+      }
+    ).
+    catch(
+      error => {
+        console.log( error );
+      }
+    );
 };
 
 function parseHeaders( cookies ) {

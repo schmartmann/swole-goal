@@ -1,32 +1,23 @@
 import React, { Component } from 'react';
 import Navigation from './navigation';
-import Authentication from './authentication';
 import Workouts from './workouts';
+import Exercises from './exercises';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 class Home extends Component {
-  returnGreeting() {
-    if ( this.props.user ) {
-      return(
-        <p>Welcome to Swole Goal, { this.props.user.email }! </p>
-      )
-    }
-  }
-
-  returnWorkoutsComponent() {
-    if ( this.props.user ) {
-      return(
-        <Workouts/>
-      )
-    }
-  }
   render() {
     return (
       <div className="main-interaction-area">
-          { this.returnGreeting() }
-        <Authentication setUser={ this.props.setUser }/>
+        <Navigation user={ this.props.user }/>
+
+        <Route path="/workouts"
+          component={ Workouts }
+          setWorkouts={ this.setWorkouts }
+          user={ this.state.user }
+          workouts={ this.state.workouts }/>
       </div>
     );
   }
-}
+};
 
 export default Home;
