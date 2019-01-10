@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Navigation from './navigation';
 import Exercises from './exercises';
 import { getWorkouts } from '../actions/workouts';
 
@@ -56,6 +57,7 @@ class Workouts extends Component {
   render() {
     return (
       <div className="component-main">
+        <Navigation/>
         <span>Your workouts: </span>
         <div className="workouts-container">
           { this.renderWorkouts() }

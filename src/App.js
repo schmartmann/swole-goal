@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { Switch, Redirect, Route, Link, withRouter } from 'react-router-dom';
+import createHistory from 'history/createBrowserHistory'
 
 import Landing from './components/landing';
 import Register from './components/register';
@@ -7,6 +8,7 @@ import Register from './components/register';
 import Navigation from './components/navigation';
 import Workouts from './components/workouts';
 import User from './components/user';
+import WorkoutBuilder from './components/workout_builder';
 
 import './App.css';
 
@@ -22,6 +24,12 @@ class App extends Component {
     this.setUser = this.setUser.bind( this );
     this.setWorkouts = this.setWorkouts.bind( this );
   };
+
+  componentDidUpdate( prevProps, prevState ) {
+    if ( !prevState.user && this.state.user ) {
+      this.props.history.push( '/workouts' );
+    }
+  }
 
   setUser( user ) {
     this.setState(
@@ -53,6 +61,10 @@ class App extends Component {
             <Workouts setWorkouts={ this.setWorkouts } user={ this.state.user } workouts={ this.state.workouts } />
           </Route>
 
+          <Route exact path="/workout">
+
+          </Route>
+
           <Route exact path="/user" component={ User }/>
         </div>
       )
@@ -69,11 +81,48 @@ class App extends Component {
   };
 
   render() {
-    return (
-      <Router>
-        { this.authenticateRouting() }
-      </Router>
+    return(
+      <Switch>
+        <Route exact path="/" component={ Landing } />
+
+        <Route
+          path="/register"
+          render={ props => <Register { ...props } setUser={ this.setUser } user={ this.state.user } /> }
+        />
+
+        <Route
+          path="/workouts"
+          render={ props => {
+            if ( this.state.user ) {
+              return(
+                <Workouts { ...props }
+                  user={ this.state.user }
+                  workouts={ this.state.workouts }
+                  setWorkouts={ this.setWorkouts }
+                />
+              );
+            } else {
+              return( <Redirect to="/register"/> );
+            }
+          }
+        } />
+
+        <Route
+          path="/workout"
+          render={ props => {
+            if ( this.state.user ) {
+              return(
+                <WorkoutBuilder { ...props } user={ this.state.user }/>
+              );
+            } else {
+              return(
+                <Redirect to="/register" />
+              )
+            }
+          }
+        } />
+      </Switch>
     );
   }
 }
-export default App;
+export default withRouter( App );

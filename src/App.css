@@ -17,6 +17,7 @@ body {
   justify-content: space-between;
   align-content: baseline;
   align-items: center;
+  width: 52%;
 }
 
 .navigation-container a {

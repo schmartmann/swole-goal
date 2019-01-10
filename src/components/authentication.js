@@ -93,7 +93,7 @@ class Authentication extends Component {
         { this.authenticationControl() }
         { this.renderForm() }
       </div>
-    )
+    );
   }
 }
 
