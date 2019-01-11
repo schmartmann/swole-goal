@@ -48,10 +48,10 @@ class Workouts extends Component {
     if ( this.props.workouts ) {
       return this.props.workouts.map(
         workout => {
-          return ( <Workout key={ workout.uuid } workout={ workout }/> )
+          return( <Workout key={ workout.uuid } workout={ workout }/> )
         }
       );
-    }
+    } 
   }
 
   render() {
@@ -59,7 +59,12 @@ class Workouts extends Component {
       <div className="component-main">
         <Navigation/>
         <div className="workouts-container">
-          <span className="section-title">Workouts</span>
+          <span className="section-title">{
+            this.props.workouts && this.props.workouts.length > 0 ?
+              'Workouts' :
+              "You don't have any workouts yet! Click 'Create Workout' to get started"
+            }
+            </span>
           { this.renderWorkouts() }
         </div>
       </div>

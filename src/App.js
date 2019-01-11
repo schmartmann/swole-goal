@@ -49,7 +49,6 @@ class App extends Component {
   };
 
   addWorkout( workout ) {
-    debugger
     var workouts = this.state.workouts;
 
     workouts.unshift( workout );
@@ -103,6 +102,19 @@ class App extends Component {
               return(
                 <Redirect to="/register" />
               )
+            }
+          }
+        } />
+
+        <Route
+          path="/user"
+          render={ props => {
+            if ( this.verifyAuth() ) {
+              return(
+                <User { ...props } user={ this.state.user }/>
+              );
+            } else {
+              return( <Redirect to="/register"/> );
             }
           }
         } />

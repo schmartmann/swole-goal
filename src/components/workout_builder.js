@@ -206,7 +206,7 @@ class WorkoutBuilder extends Component {
           { this.returnSelectedExercisesContainer() }
 
           <div className="form-field exercise">
-            <span>Add at least one exercise</span>
+            <span>{ this.state.workout.pairedExercises.length === 0 ? 'Add at least one exercise' : 'Exercises' } </span>
             <div className="exercises-container">
               { this.returnExistingExercises() }
             </div>

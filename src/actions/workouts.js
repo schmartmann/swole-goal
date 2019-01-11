@@ -9,11 +9,11 @@ export function getWorkouts( headers ) {
     )
 };
 
-export function postWorkout( headers, body ) {  
+export function postWorkout( headers, body ) {
   return apiPostRequest( headers, '/workouts', body ).
-  then(
-    workout => workout
-  ).catch(
-    error => console.log( error )
-  )
+    then(
+      workout => workout
+    ).catch(
+      error => console.log( error )
+    );
 };

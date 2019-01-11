@@ -14,6 +14,7 @@ class Authentication extends Component {
     this.setNewUser      = this.setNewUser.bind( this );
     this.setExistingUser = this.setExistingUser.bind( this );
     this.signUserIn      = this.signUserIn.bind( this );
+    this.signUserUp      = this.signUserUp.bind( this );
   }
 
   setNewUser() {
@@ -52,6 +53,7 @@ class Authentication extends Component {
     ).
       then(
         user => {
+          debugger
           this.props.setUser( user );
         }
       );
