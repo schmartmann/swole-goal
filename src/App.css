@@ -48,12 +48,40 @@ body {
   margin-top: 10px;
 }
 
+.authentication-container {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  width: 400px;
+}
+
+.authentication-container .auth-switch {
+  color: lightgrey;
+  align-self: flex-end;
+}
+
+.authentication-container .auth-switch .hoverable {
+  cursor: pointer;
+}
+
+.authentication-container .auth-switch .hoverable:hover {
+  font-weight: 700;
+}
+
 .workouts-container {
   display: flex;
   flex-flow: column nowrap;
   justify-content: flex-start;
   align-items: center;
   width: 100%;
+}
+
+.workouts-container .section-title {
+  margin: 10px auto;
+  font-size: 18px;
+  text-transform: uppercase;
+  font-weight: lighter;
 }
 
 .workout {
@@ -99,11 +127,13 @@ body {
   text-transform: none;
 }
 
-.forms {
+.form {
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
+  max-width: 400px;
+  margin-top: 20px;
 }
 
 .form-field {
@@ -111,9 +141,21 @@ body {
   flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
+  margin: 10px auto;
 }
 
-.form-field button,
 .form-field label {
   align-self: flex-start;
+}
+.form-field button {
+  background: #336B87;
+  border: none;
+  border-radius: 4px;
+  width: 100px;
+  color: white;
+  align-self: flex-start;
+}
+
+.form-field button:hover {
+  cursor: pointer;
 }

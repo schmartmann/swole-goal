@@ -58,8 +58,8 @@ class Workouts extends Component {
     return (
       <div className="component-main">
         <Navigation/>
-        <span>Your workouts: </span>
         <div className="workouts-container">
+          <span className="section-title">Workouts</span>
           { this.renderWorkouts() }
         </div>
       </div>
