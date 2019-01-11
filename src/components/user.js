@@ -83,7 +83,6 @@ class User extends Component {
         body
       ).then(
         updatedUser => {
-          debugger
           updatedUser.headers = {};
 
           Object.assign( updatedUser.headers, this.state.user.headers );

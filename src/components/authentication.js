@@ -53,7 +53,6 @@ class Authentication extends Component {
     ).
       then(
         user => {
-          debugger
           this.props.setUser( user );
         }
       );
