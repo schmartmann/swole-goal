@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Navigation from './navigation';
 import Exercises from './exercises';
 import { getWorkouts } from '../actions/workouts';
 
@@ -47,17 +48,23 @@ class Workouts extends Component {
     if ( this.props.workouts ) {
       return this.props.workouts.map(
         workout => {
-          return ( <Workout key={ workout.uuid } workout={ workout }/> )
+          return( <Workout key={ workout.uuid } workout={ workout }/> )
         }
       );
-    }
+    } 
   }
 
   render() {
     return (
       <div className="component-main">
-        <span>Your workouts: </span>
+        <Navigation/>
         <div className="workouts-container">
+          <span className="section-title">{
+            this.props.workouts && this.props.workouts.length > 0 ?
+              'Workouts' :
+              "You don't have any workouts yet! Click 'Create Workout' to get started"
+            }
+            </span>
           { this.renderWorkouts() }
         </div>
       </div>

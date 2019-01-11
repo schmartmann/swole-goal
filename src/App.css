@@ -13,10 +13,11 @@ body {
 
 .navigation-container {
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: row nowrap;
   justify-content: space-between;
   align-content: baseline;
   align-items: center;
+  width: 52%;
 }
 
 .navigation-container a {
@@ -47,12 +48,64 @@ body {
   margin-top: 10px;
 }
 
-.workouts-container {
+.component-main .welcome-container {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+}
+
+.component-main .welcome-container .copy {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+}
+
+.component-main .welcome-container .copy span {
+  margin-bottom: 18px;
+}
+
+.component-main .welcome-container .copy a {
+  color: white;
+  text-decoration: none;
+}
+
+.component-main .welcome-container .copy a:hover {
+  font-weight: 600;
+}
+
+.authentication-container {
   display: flex;
   flex-flow: column nowrap;
   justify-content: flex-start;
   align-items: center;
+  width: 400px;
+}
+
+.authentication-container .auth-switch {
+  color: lightgrey;
+}
+
+.authentication-container .auth-switch .hoverable {
+  cursor: pointer;
+}
+
+.authentication-container .auth-switch .hoverable:hover {
+  font-weight: 700;
+}
+
+.workouts-container {
+  display: flex;
+  flex-flow: column-reverse nowrap;
+  justify-content: flex-start;
+  align-items: center;
   width: 100%;
+}
+
+.workouts-container .section-title {
+  margin: 10px auto;
+  font-size: 18px;
+  text-transform: uppercase;
+  font-weight: lighter;
 }
 
 .workout {
@@ -98,11 +151,32 @@ body {
   text-transform: none;
 }
 
-.forms {
+.form {
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
+  width: 200px;
+  border: 1px solid #336B87;
+  margin-top: 10px;
+  border-radius: 4px;
+  padding: 16px;
+}
+
+.form.new-workout {
+  width: 400px;
+}
+
+.form.existing-user {
+  width: 400px;
+}
+
+.form.existing-user .success {
+  color: lightgreen;
+}
+
+.form.existing-user .error {
+  color: red;
 }
 
 .form-field {
@@ -110,9 +184,83 @@ body {
   flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
+  margin: 10px auto;
+  width: 100%;
 }
 
-.form-field button,
 .form-field label {
   align-self: flex-start;
+}
+.form-field button {
+  background: #336B87;
+  border: none;
+  border-radius: 4px;
+  height: 24px;
+  width: 148px;
+  color: white;
+  align-self: flex-start;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 200;
+}
+
+.form-field button:hover {
+  cursor: pointer;
+  background: white;
+  color: #336B87;
+}
+
+.form-field input {
+  margin-top: 4px;
+  font-size: 14px;
+  color: white;
+  background: #336B87;
+  border-radius: 4px;
+  border: none;
+  width: 100%;
+}
+
+.form-field input[type='checkbox'] {
+  width: 20px;
+}
+
+.form-field.new-workout-name {
+  width: 100%;
+  overflow: hide;
+}
+
+.form-field.new-workout-name input {
+  width: 100%;
+}
+
+.form-field.exercise {
+  width: 100%;
+  overflow: hide;
+}
+
+.form.new-workout .exercises-container {
+  width: 100%;
+}
+
+.exercises-container .exercise {
+  margin: 8px auto;
+  height: 24px;
+  background: #2A3132;
+  width: 95%;
+  display: flex;
+  flex-flow: row-reverse nowrap;
+  justify-content: flex-end;
+  border-radius: 4px;
+  padding: 4px 8px;
+}
+
+.exercises-container .exercise * {
+  cursor: pointer;
+}
+
+.exercises-container .exercise label {
+  margin-left: 4px;
+}
+
+.exercises-container .exercise input {
 }

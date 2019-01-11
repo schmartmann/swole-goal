@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
 
 class Exercise extends Component {
-  buildText() {
-
-  }
-
   render() {
     const exercise = this.props.exercise;
     return(

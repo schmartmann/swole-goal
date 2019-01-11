@@ -8,12 +8,13 @@ class Authentication extends Component {
     super();
 
     this.state = {
-      newUser: false
+      newUser: true
     };
 
     this.setNewUser      = this.setNewUser.bind( this );
     this.setExistingUser = this.setExistingUser.bind( this );
     this.signUserIn      = this.signUserIn.bind( this );
+    this.signUserUp      = this.signUserUp.bind( this );
   }
 
   setNewUser() {
@@ -52,6 +53,7 @@ class Authentication extends Component {
     ).
       then(
         user => {
+          debugger
           this.props.setUser( user );
         }
       );
@@ -60,16 +62,16 @@ class Authentication extends Component {
   authenticationControl() {
     if ( this.state.newUser ) {
       return(
-        <span>
+        <span className="auth-switch">
           Already a user?
-          <span onClick={ this.setExistingUser }> Log In</span>
+          <span className="hoverable" onClick={ this.setExistingUser }> Log In</span>
         </span>
       );
     } else {
       return(
-        <span>
-          Need to sign up?
-          <span onClick={ this.setNewUser }> Sign Up</span>
+        <span className="auth-switch">
+          Not a member?
+          <span className="hoverable" onClick={ this.setNewUser }> Sign Up</span>
         </span>
       );
     }
@@ -93,7 +95,7 @@ class Authentication extends Component {
         { this.authenticationControl() }
         { this.renderForm() }
       </div>
-    )
+    );
   }
 }
 
