@@ -48,6 +48,31 @@ body {
   margin-top: 10px;
 }
 
+.component-main .welcome-container {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+}
+
+.component-main .welcome-container .copy {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+}
+
+.component-main .welcome-container .copy span {
+  margin-bottom: 18px;
+}
+
+.component-main .welcome-container .copy a {
+  color: white;
+  text-decoration: none;
+}
+
+.component-main .welcome-container .copy a:hover {
+  font-weight: 600;
+}
+
 .authentication-container {
   display: flex;
   flex-flow: column nowrap;
