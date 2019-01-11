@@ -1,9 +1,9 @@
-import { apiRequest } from './request';
+import { apiGetRequest } from './request';
 
 export function getExercises( headers ) {
-  return apiRequest( headers, 'get', '/exercises' ).
+  return apiGetRequest( headers, '/exercises' ).
     then(
-      exercises => exercises 
+      exercises => exercises
     ).catch(
       error => console.log( error )
     );

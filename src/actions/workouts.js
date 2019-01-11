@@ -1,7 +1,7 @@
-import { apiRequest } from './request';
+import { apiGetRequest, apiPostRequest } from './request';
 
 export function getWorkouts( headers ) {
-  return apiRequest( headers, 'get', '/workouts' ).
+  return apiGetRequest( headers, '/workouts' ).
     then(
       workouts => workouts
     ).catch(
@@ -9,8 +9,8 @@ export function getWorkouts( headers ) {
     )
 };
 
-export function postWorkout( headers, body ) {
-  return apiRequest( headers, 'post', '/workouts', body ).
+export function postWorkout( headers, body ) {  
+  return apiPostRequest( headers, '/workouts', body ).
   then(
     workout => workout
   ).catch(

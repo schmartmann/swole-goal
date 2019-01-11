@@ -8,7 +8,7 @@ class Authentication extends Component {
     super();
 
     this.state = {
-      newUser: false
+      newUser: true
     };
 
     this.setNewUser      = this.setNewUser.bind( this );
