@@ -21,51 +21,82 @@ Auth.configure(
     }
   }
 );
+export const signIn = ( user, password ) => {
+  return new Promise(
+    ( resolve, reject ) => {
 
-export function signIn( user, password ) {
-  return Auth.emailSignIn(
-    {
-      email: user,
-      password: password
+      var params = {
+        email: user,
+        password: password
+      };
+
+      return Auth.emailSignIn( params ).
+        then(
+          user => {
+            const cookies = new Cookies();
+            var headers = parseHeaders( cookies );
+            user = bundleUserData( user, headers );
+            resolve( user );
+          }
+        ).
+        catch(
+          error => reject( error )
+        );
     }
-  ).
-    then(
-      user => {
-        const cookies = new Cookies();
-        var headers = parseHeaders( cookies );
-        cookies.set( 'sgUser', user.data.uid, { path: '/' } );
-        return bundleUserData( user, headers );
-      }
-    ).
-    catch(
-      error => {
-        console.log( error );
-      }
-    );
+  );
 };
 
-export function signUp( email, password, passwordConfirmation ) {
-  return Auth.emailSignUp(
-    {
-      email: email,
-      password: password,
-      password_confirmation: passwordConfirmation
+export const signUp = ( email, password, passwordConfirmation ) => {
+  return new Promise(
+    ( resolve, reject ) => {
+
+      var params = {
+        email: email,
+        password: password,
+        password_confirmation: passwordConfirmation
+      };
+
+      return Auth.emailSignUp( params ).
+        then(
+          user => {
+            const cookies = new Cookies();
+            var headers = parseHeaders( cookies );
+            user = bundleUserData( user, headers );
+            resolve( user );
+          }
+        ).
+        catch(
+          error => reject( error )
+        );
     }
-  ).
-    then(
-      user => {
-        const cookies = new Cookies();
-        var headers = parseHeaders( cookies );
-        cookies.set( 'sgUser', user.data.uid, { path: '/' } );
-        return bundleUserData( user, headers );
-      }
-    ).
-    catch(
-      error => {
-        console.log( error );
-      }
-    );
+  );
 };
+
+export const requireAuth = () => {
+  return new Promise(
+    ( resolve, reject ) => {
+      return Auth.validateToken().
+        then(
+          user => {
+            if ( user ) {
+              const cookies = new Cookies();
+              var headers = parseHeaders( cookies );
+              user.headers = headers;
+
+              resolve( user );
+            }
+            else {
+              reject( user );
+            }
+          }
+        ).
+        catch(
+          error => reject( error )
+        );
+    }
+  );
+};
+
 
 function parseHeaders( cookies ) {
   return cookies.get( 'authHeaders' );

@@ -1,46 +1,64 @@
 
 export function apiGetRequest( userHeaders, route ) {
-  const ROOT_URL = 'http://localhost:3001';
+  return new Promise(
+    ( resolve, reject ) => {
+      const ROOT_URL = process.env.REACT_APP_API_ROOT_URL || 'http://localhost:3001';
 
-  return fetch(
-    `${ ROOT_URL }${ route }`, {
-      method: 'get',
-      mode: 'cors',
-      headers: {
-        'Access-Token': userHeaders[ 'access-token' ],
-        'Client': userHeaders.client,
-        'Token-Type': userHeaders[ 'token-type' ],
-        'Expiry': userHeaders.expiry,
-        'Uid': userHeaders.uid
-      }
+      return fetch(
+        `${ ROOT_URL }${ route }`, {
+          method: 'get',
+          mode: 'cors',
+          headers: {
+            'Access-Token': userHeaders[ 'access-token' ],
+            'Client': userHeaders.client,
+            'Token-Type': userHeaders[ 'token-type' ],
+            'Expiry': userHeaders.expiry,
+            'Uid': userHeaders.uid
+          }
+        }
+      ).
+      then(
+        response => response.json()
+      ).
+      then(
+        response => resolve( response )
+      ).
+      catch(
+        error => error
+      );
     }
-  ).then(
-    response => response.json()
-  ).catch(
-    error => error
   );
 };
 
 export function apiPostRequest( userHeaders, route, body ) {
-  const ROOT_URL = 'http://localhost:3001';
+  return new Promise(
+    ( resolve, reject ) => {
+      const ROOT_URL = process.env.REACT_APP_API_ROOT_URL;
 
-  return fetch(
-    `${ ROOT_URL }${ route }`, {
-      crossDomain: true,
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Token': userHeaders[ 'access-token' ],
-        'Client': userHeaders.client,
-        'Token-Type': userHeaders[ 'token-type' ],
-        'Expiry': userHeaders.expiry,
-        'Uid': userHeaders.uid
-      },
-      body: JSON.stringify( body )
+      return fetch(
+        `${ ROOT_URL }${ route }`, {
+          crossDomain: true,
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Token': userHeaders[ 'access-token' ],
+            'Client': userHeaders.client,
+            'Token-Type': userHeaders[ 'token-type' ],
+            'Expiry': userHeaders.expiry,
+            'Uid': userHeaders.uid
+          },
+          body: JSON.stringify( body )
+        }
+      ).
+      then(
+        response => response.json()
+      ).
+      then(
+        response => resolve( response )
+      ).
+      catch(
+        error => reject( error )
+      );
     }
-  ).then(
-    response => response.json()
-  ).catch(
-    error => error
   );
 };
