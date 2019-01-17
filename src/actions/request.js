@@ -33,7 +33,6 @@ export function apiGetRequest( userHeaders, route ) {
 export function apiPostRequest( userHeaders, route, body ) {
   return new Promise(
     ( resolve, reject ) => {
-
       const ROOT_URL = process.env.REACT_APP_API_ROOT_URL;
 
       return fetch(

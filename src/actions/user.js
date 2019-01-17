@@ -1,9 +1,9 @@
 import { apiGetRequest, apiPostRequest } from './request';
 
-export function postUser( headers, body ) {
+export function postUser( user, body ) {
   return new Promise(
     ( resolve, reject ) => {
-      return apiPostRequest( headers, '/user_info', body ).
+      return apiPostRequest( user.headers, '/user_info', body ).
         then(
           user => resolve( user )
         ).

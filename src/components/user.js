@@ -8,6 +8,8 @@ const DEFAULT_STATE = {
   loading: true,
   user: {
     name: '',
+    nickname: '',
+    image: '',
     email: '',
     uuid: null
   },
@@ -75,33 +77,27 @@ class User extends Component {
   handleSubmit( event ) {
     event.preventDefault();
 
+    const { user } = this.state;
+
     if ( this.validateForm() ) {
-      var body = {
-        user: {
-          name: this.state.user.name,
-          email: this.state.user.email
-        }
-      };
+      var body = { user: user };
 
-      postUser(
-        this.state.user.headers,
-        body
-      ).then(
-        updatedUser => {
-          updatedUser.headers = {};
-
-          Object.assign( updatedUser.headers, this.state.user.headers );
-
-          this.setState(
-            {
-              user: updatedUser,
-              message: 'Account information successfully updated!'
-            }
-          );
-        }
-      ).catch(
-        error => error
-      );
+      requireAuth().
+        then(
+          user => postUser( user, body )
+        ).
+        then(
+          updatedUser => {
+            console.log( updatedUser );
+            var newState = this.state;
+            newState.user = updatedUser;
+            newState.message = 'Account information successfully updated!';
+            this.setState( newState );
+          }
+        ).
+        catch(
+          error => error
+        );
     }
   };
 
@@ -119,6 +115,14 @@ class User extends Component {
               <div className="form-field">
                 <label htmlFor="email">Name</label>
                 <input type="text" value={ this.state.user.name } name="name" onChange={ this.handleChange.bind( this ) }/>
+              </div>
+              <div className="form-field">
+                <label htmlFor="email">Nickname</label>
+                <input type="text" value={ this.state.user.nickname } name="nickname" onChange={ this.handleChange.bind( this ) }/>
+              </div>
+              <div className="form-field">
+                <label htmlFor="email">Image</label>
+                <input type="text" value={ this.state.user.image } name="image" onChange={ this.handleChange.bind( this ) }/>
               </div>
               <div className="form-field">
                 <label htmlFor="email">Email</label>
