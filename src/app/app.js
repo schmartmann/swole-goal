@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
-import Landing from './components/landing';
-import Register from './components/register';
+import Landing from '../landing/landing';
+import Register from '../register/register';
 
-import Workouts from './components/workouts';
-import User from './components/user';
-import WorkoutBuilder from './components/workout_builder';
+import Workouts from '../workouts/workouts';
+import WorkoutBuilder from '../workout/workout_builder';
 
-import './App.css';
+import User from '../user/user';
+
+import './app.css';
 
 const App = () => {
   return(

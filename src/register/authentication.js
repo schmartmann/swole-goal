@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import NewUser from './forms/new_user';
-import ExistingUser from './forms/existing_user';
+import NewUser from '../components/forms/new_user';
+import ExistingUser from '../components/forms/existing_user';
 import { signIn, signUp } from '../actions/auth';
 
 class Authentication extends Component {

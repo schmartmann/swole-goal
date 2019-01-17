@@ -3,68 +3,73 @@ import Auth from 'j-toker'
 
 const ROOT_URL = 'http://localhost:3001'
 
-const authConfig = {
-  apiUrl: ROOT_URL,
-  passwordReserSuccessUrl: function() {
-    return `${ ROOT_URL }/pass`;
-  },
-  confirmationSuccessUrl: function() {
-    return `${ ROOT_URL }/pass`;
-  },
-  tokenFormat: {
-    "access-token": "{{ access-token }}",
-    "token-type":   "Bearer",
-    client:         "{{ client }}",
-    expiry:         "{{ expiry }}",
-    uid:            "{{ uid }}"
-  }
-}
-
-
-Auth.configure( authConfig );
-
-export function signIn( user, password ) {
-  return Auth.emailSignIn(
-    {
-      email: user,
-      password: password
+Auth.configure(
+  {
+    apiUrl: ROOT_URL,
+    passwordReserSuccessUrl: function() {
+      return `${ ROOT_URL }/pass`;
+    },
+    confirmationSuccessUrl: function() {
+      return `${ ROOT_URL }/pass`;
+    },
+    tokenFormat: {
+      "access-token": "{{ access-token }}",
+      "token-type":   "Bearer",
+      client:         "{{ client }}",
+      expiry:         "{{ expiry }}",
+      uid:            "{{ uid }}"
     }
-  ).
-    then(
-      user => {
-        const cookies = new Cookies();
-        var headers = parseHeaders( cookies );
-        cookies.set( 'sgUser', headers, { path: '/' } );
-        return bundleUserData( user, headers );
-      }
-    ).
-    catch(
-      error => {
-        console.log( error );
-      }
-    );
+  }
+);
+export const signIn = ( user, password ) => {
+  return new Promise(
+    ( resolve, reject ) => {
+
+      var params = {
+        email: user,
+        password: password
+      };
+
+      return Auth.emailSignIn( params ).
+        then(
+          user => {
+            const cookies = new Cookies();
+            var headers = parseHeaders( cookies );
+            user = bundleUserData( user, headers );
+            resolve( user );
+          }
+        ).
+        catch(
+          error => reject( error )
+        );
+    }
+  );
 };
 
-export function signUp( email, password, passwordConfirmation ) {
-  return Auth.emailSignUp(
-    {
-      email: email,
-      password: password,
-      password_confirmation: passwordConfirmation
+export const signUp = ( email, password, passwordConfirmation ) => {
+  return new Promise(
+    ( resolve, reject ) => {
+
+      var params = {
+        email: email,
+        password: password,
+        password_confirmation: passwordConfirmation
+      };
+
+      return Auth.emailSignUp( params ).
+        then(
+          user => {
+            const cookies = new Cookies();
+            var headers = parseHeaders( cookies );
+            user = bundleUserData( user, headers );
+            resolve( user );
+          }
+        ).
+        catch(
+          error => reject( error )
+        );
     }
-  ).
-    then(
-      user => {
-        const cookies = new Cookies();
-        var headers = parseHeaders( cookies );
-        return bundleUserData( user, headers );
-      }
-    ).
-    catch(
-      error => {
-        console.log( error );
-      }
-    );
+  );
 };
 
 export const requireAuth = () => {
@@ -79,7 +84,8 @@ export const requireAuth = () => {
               user.headers = headers;
 
               resolve( user );
-            } else {
+            }
+            else {
               reject( user );
             }
           }

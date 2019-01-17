@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-import Navigation from './navigation';
-import Workout from './workout';
+import Navigation from '../components/navigation';
+import Workout from '../workout/workout';
 import { requireAuth } from '../actions/auth';
 import { getWorkouts } from '../actions/workouts';
 

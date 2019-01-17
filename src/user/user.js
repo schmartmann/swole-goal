@@ -1,23 +1,19 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-import Navigation from './navigation';
+import Navigation from '../components/navigation';
 import { requireAuth } from '../actions/auth';
 import { postUser } from '../actions/user';
 
 const DEFAULT_STATE = {
   loading: true,
   user: {
-    name: '',
-    nickname: '',
-    image: '',
-    email: '',
     uuid: null
   },
   errors: {
     name: false,
     email: false
   },
-  message: ''
+  message: null
 };
 
 class User extends Component {
@@ -88,7 +84,6 @@ class User extends Component {
         ).
         then(
           updatedUser => {
-            console.log( updatedUser );
             var newState = this.state;
             newState.user = updatedUser;
             newState.message = 'Account information successfully updated!';
@@ -111,22 +106,22 @@ class User extends Component {
             <Navigation/>
             <form className="form existing-user" name="existingUser" onSubmit={ this.handleSubmit.bind( this ) }>
               <label>Update Account Info</label>
-              <span className="success">{ this.state.message }</span>
+              <span className="success">{ this.state.message || '' }</span>
               <div className="form-field">
                 <label htmlFor="email">Name</label>
-                <input type="text" value={ this.state.user.name } name="name" onChange={ this.handleChange.bind( this ) }/>
+                <input type="text" value={ this.state.user.name || '' } name="name" onChange={ this.handleChange.bind( this ) }/>
               </div>
               <div className="form-field">
                 <label htmlFor="email">Nickname</label>
-                <input type="text" value={ this.state.user.nickname } name="nickname" onChange={ this.handleChange.bind( this ) }/>
+                <input type="text" value={ this.state.user.nickname || '' } name="nickname" onChange={ this.handleChange.bind( this ) }/>
               </div>
               <div className="form-field">
                 <label htmlFor="email">Image</label>
-                <input type="text" value={ this.state.user.image } name="image" onChange={ this.handleChange.bind( this ) }/>
+                <input type="text" value={ this.state.user.image || '' } name="image" onChange={ this.handleChange.bind( this ) }/>
               </div>
               <div className="form-field">
                 <label htmlFor="email">Email</label>
-                <input type="text" value={ this.state.user.email } name="email" onChange={ this.handleChange.bind( this ) }/>
+                <input type="text" value={ this.state.user.email || '' } name="email" onChange={ this.handleChange.bind( this ) }/>
               </div>
               <div className="form-field">
                 <button type="submit">Submit</button>
