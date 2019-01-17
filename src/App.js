@@ -1,142 +1,27 @@
 import React, { Component } from 'react';
-import { Switch, Redirect, Route, Link, withRouter } from 'react-router-dom';
-import createHistory from 'history/createBrowserHistory'
-import { validateToken } from './actions/auth';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import Landing from './components/landing';
 import Register from './components/register';
 
-import Navigation from './components/navigation';
 import Workouts from './components/workouts';
 import User from './components/user';
 import WorkoutBuilder from './components/workout_builder';
 
 import './App.css';
 
-class App extends Component {
-  constructor() {
-    super();
+const App = () => {
+  return(
+    <Router>
+      <div className="app-container">
+        <Route exact path="/"   exact component={ Landing } />
+        <Route path="/register" exact component={ Register } />
+        <Route path="/workouts" exact component={ Workouts } />
+        <Route path="/workout"  exact component={ WorkoutBuilder } />
+        <Route path="/user"     exact component={ User } />
+      </div>
+    </Router>
+  );
+};
 
-    this.state = {
-      user: null,
-      workouts: null
-    };
-
-    this.setUser     = this.setUser.bind( this );
-    this.setWorkouts = this.setWorkouts.bind( this );
-    this.addWorkout  = this.addWorkout.bind( this );
-  };
-
-  componentWillMount() {
-    validateToken().
-      then(
-        user => {
-          var newState = this.state;
-          newState.user = user;
-          this.setState( newState );
-        }
-      );
-  }
-
-  componentDidUpdate( prevProps, prevState ) {
-    if ( !prevState.user && this.state.user ) {
-      this.props.history.push( '/workouts' );
-    }
-  }
-
-  setUser( user ) {
-    this.setState(
-      {
-        user: user
-      }
-    );
-  };
-
-  setWorkouts( workouts ) {
-    this.setState(
-      {
-        workouts: workouts
-      }
-    );
-  };
-
-  addWorkout( workout ) {
-    var workouts = this.state.workouts;
-
-    workouts.unshift( workout );
-
-    this.setState(
-      {
-        workouts: workouts
-      }
-    );
-  };
-
-  verifyAuth() {
-    return this.state.user;
-  }
-
-  render() {
-    return(
-      <Switch>
-        <Route exact path="/" render={
-          () => {
-            if ( this.verifyAuth() ) {
-              return( <Redirect to="/workouts"/> )
-            } else {
-              return( <Landing/> );
-            }
-          }
-        }/>
-
-        <Route path="/register" component={ Register } />
-
-        <Route
-          path="/workouts"
-          render={ props => {
-            if ( this.verifyAuth() ) {
-              return(
-                <Workouts { ...props }
-                  user={ this.state.user }
-                  workouts={ this.state.workouts }
-                  setWorkouts={ this.setWorkouts }
-                />
-              );
-            } else {
-              return( <Redirect to="/register"/> );
-            }
-          }
-        } />
-
-        <Route
-          path="/workout"
-          render={ props => {
-            if ( this.verifyAuth() ) {
-              return(
-                <WorkoutBuilder { ...props } user={ this.state.user } addWorkout={ this.addWorkout }/>
-              );
-            } else {
-              return(
-                <Redirect to="/register" />
-              )
-            }
-          }
-        } />
-
-        <Route
-          path="/user"
-          render={ props => {
-            if ( this.verifyAuth() ) {
-              return(
-                <User { ...props } user={ this.state.user }/>
-              );
-            } else {
-              return( <Redirect to="/register"/> );
-            }
-          }
-        } />
-      </Switch>
-    );
-  }
-}
-export default withRouter( App );
+export default App;

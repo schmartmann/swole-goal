@@ -1,32 +1,19 @@
 import React, { Component } from 'react';
 import { Switch, Redirect, Route, Link, withRouter } from 'react-router-dom';
-import { validateToken } from '../actions/auth';
+import { requireAuth } from '../actions/auth';
 import Authentication from './authentication';
 
 class Register extends Component {
   state = { user: null }
 
   componentWillMount() {
-    console.log( this.props );
-    validateToken().then(
-      user => {
-        if ( user ) {
-          this.setState(
-            {
-              user: user
-            }
-          );
-
-          this.props.setUser(
-            {
-              user: user
-            }
-          );
-
-          this.props.location.pathname = '/workouts';
-        }
-      }
-    )
+    requireAuth().
+      then(
+        user => this.setState( { user: user } )
+      ).
+      catch(
+        error => console.log( error )
+      );
   }
   render() {
     if ( !this.state.user ) {

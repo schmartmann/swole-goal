@@ -1,19 +1,29 @@
 import { apiGetRequest, apiPostRequest } from './request';
 
-export function getWorkouts( headers ) {
-  return apiGetRequest( headers, '/workouts' ).
-    then(
-      workouts => workouts
-    ).catch(
-      error => console.log( error )
-    )
+export function getWorkouts( user ) {
+  return new Promise(
+    ( resolve, reject ) => {
+      return apiGetRequest( user.headers, '/workouts' ).
+        then(
+          userWorkouts => resolve( [ user, userWorkouts ] )
+        ).
+        catch(
+          error => reject( error )
+        );
+    }
+  );
 };
 
-export function postWorkout( headers, body ) {
-  return apiPostRequest( headers, '/workouts', body ).
-    then(
-      workout => workout
-    ).catch(
-      error => console.log( error )
-    );
+export function postWorkout( user, body ) {
+  return new Promise(
+    ( resolve, reject ) => {
+      return apiPostRequest( user.headers, '/workouts', body ).
+        then(
+          userWorkouts => resolve( [ user, userWorkouts ] )
+        ).
+        catch(
+          error => reject( error )
+        );
+    }
+  );
 };

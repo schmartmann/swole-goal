@@ -1,74 +1,77 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import Navigation from './navigation';
-import Exercises from './exercises';
+import Workout from './workout';
+import { requireAuth } from '../actions/auth';
 import { getWorkouts } from '../actions/workouts';
 
-class Workout extends Component {
-  renderExercises() {
-    if ( this.props.workout.exercises.length > 0 ) {
-      return(
-        <div>
-          <span>Exercises:</span>
-          <Exercises exercises={ this.props.workout.exercises }/>
-        </div>
-      );
-    } else {
-      return(
-        <div className="exercises-empty">
-          No exercises for this workout!
-        </div>
-      );
-    };
-  };
 
-  render() {
-    return(
-      <div className="workout">
-        <div className="workout-info">
-          <span>{ this.props.workout.name }</span>
-        </div>
-        <div className="workout-exercises">
-          { this.renderExercises() }
-        </div>
+const workoutsView = ( workouts ) => {
+  var copy = workouts && workouts.length > 0 ?
+    'Workouts' :
+    "You don't have any workouts yet! Click 'Create Workout' to get started"
+
+  return(
+    <div className="component-main">
+      <Navigation/>
+      <div className="workouts-container">
+        <span className="section-title">
+          { copy }
+        </span>
+        { renderWorkouts( workouts ) }
       </div>
-    )
-  };
+    </div>
+  );
+};
+
+const renderWorkouts = ( workouts ) => {
+  if ( workouts && workouts.length > 0 ) {
+    return workouts.map(
+      workout => {
+        return( <Workout key={ workout.uuid } workout={ workout }/> )
+      }
+    );
+  } else {
+    return null;
+  }
 };
 
 class Workouts extends Component {
+  state = { user: null, workouts: [], loading: true };
+
   componentWillMount() {
-    getWorkouts( this.props.user.headers ).then(
-      workouts => {
-        this.props.setWorkouts( workouts );
-      }
-    );
+    requireAuth().
+      then(
+        user => getWorkouts( user )
+      ).
+      then(
+        results => {
+          this.setState(
+            {
+              user: results[ 0 ],
+              workouts: results[ 1 ],
+              loading: false
+            }
+          );
+        }
+      ).
+      catch(
+        error => console.log( error )
+      );
   };
 
-  renderWorkouts() {
-    if ( this.props.workouts ) {
-      return this.props.workouts.map(
-        workout => {
-          return( <Workout key={ workout.uuid } workout={ workout }/> )
-        }
-      );
-    } 
-  }
-
   render() {
-    return (
-      <div className="component-main">
-        <Navigation/>
-        <div className="workouts-container">
-          <span className="section-title">{
-            this.props.workouts && this.props.workouts.length > 0 ?
-              'Workouts' :
-              "You don't have any workouts yet! Click 'Create Workout' to get started"
-            }
-            </span>
-          { this.renderWorkouts() }
-        </div>
-      </div>
-    );
+    const { workouts, user, loading } = this.state;
+
+    if ( !loading && user && workouts ) {
+      return( workoutsView( workouts ) );
+    }
+    else if ( !loading && !user ) {
+      return( <Redirect to="/register"/> )
+    }
+    else if ( loading && !user ) {
+      return null;
+    }
   }
 }
 

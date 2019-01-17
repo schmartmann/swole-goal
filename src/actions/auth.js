@@ -67,22 +67,30 @@ export function signUp( email, password, passwordConfirmation ) {
     );
 };
 
-export function validateToken() {
-  return Auth.validateToken().
-    then(
-      user => {
-        const cookies = new Cookies();
-        var headers = parseHeaders( cookies );
-        user.headers = headers;
-        return user;
-      }
-    ).
-    catch(
-      error => {
-        console.log( error );
-      }
-    );
+export const requireAuth = () => {
+  return new Promise(
+    ( resolve, reject ) => {
+      return Auth.validateToken().
+        then(
+          user => {
+            if ( user ) {
+              const cookies = new Cookies();
+              var headers = parseHeaders( cookies );
+              user.headers = headers;
+
+              resolve( user );
+            } else {
+              reject( user );
+            }
+          }
+        ).
+        catch(
+          error => reject( error )
+        );
+    }
+  );
 };
+
 
 function parseHeaders( cookies ) {
   return cookies.get( 'authHeaders' );
