@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Switch, Redirect, Route, Link, withRouter } from 'react-router-dom';
 import createHistory from 'history/createBrowserHistory'
+import { validateToken } from './actions/auth';
 
 import Landing from './components/landing';
 import Register from './components/register';
@@ -25,6 +26,17 @@ class App extends Component {
     this.setWorkouts = this.setWorkouts.bind( this );
     this.addWorkout  = this.addWorkout.bind( this );
   };
+
+  componentWillMount() {
+    validateToken().
+      then(
+        user => {
+          var newState = this.state;
+          newState.user = user;
+          this.setState( newState );
+        }
+      );
+  }
 
   componentDidUpdate( prevProps, prevState ) {
     if ( !prevState.user && this.state.user ) {
@@ -67,12 +79,17 @@ class App extends Component {
   render() {
     return(
       <Switch>
-        <Route exact path="/" component={ Landing } />
+        <Route exact path="/" render={
+          () => {
+            if ( this.verifyAuth() ) {
+              return( <Redirect to="/workouts"/> )
+            } else {
+              return( <Landing/> );
+            }
+          }
+        }/>
 
-        <Route
-          path="/register"
-          render={ props => <Register { ...props } setUser={ this.setUser } user={ this.state.user } /> }
-        />
+        <Route path="/register" component={ Register } />
 
         <Route
           path="/workouts"

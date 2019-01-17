@@ -3,24 +3,25 @@ import Auth from 'j-toker'
 
 const ROOT_URL = 'http://localhost:3001'
 
-Auth.configure(
-  {
-    apiUrl: ROOT_URL,
-    passwordReserSuccessUrl: function() {
-      return `${ ROOT_URL }/pass`;
-    },
-    confirmationSuccessUrl: function() {
-      return `${ ROOT_URL }/pass`;
-    },
-    tokenFormat: {
-      "access-token": "{{ access-token }}",
-      "token-type":   "Bearer",
-      client:         "{{ client }}",
-      expiry:         "{{ expiry }}",
-      uid:            "{{ uid }}"
-    }
+const authConfig = {
+  apiUrl: ROOT_URL,
+  passwordReserSuccessUrl: function() {
+    return `${ ROOT_URL }/pass`;
+  },
+  confirmationSuccessUrl: function() {
+    return `${ ROOT_URL }/pass`;
+  },
+  tokenFormat: {
+    "access-token": "{{ access-token }}",
+    "token-type":   "Bearer",
+    client:         "{{ client }}",
+    expiry:         "{{ expiry }}",
+    uid:            "{{ uid }}"
   }
-);
+}
+
+
+Auth.configure( authConfig );
 
 export function signIn( user, password ) {
   return Auth.emailSignIn(
@@ -33,7 +34,7 @@ export function signIn( user, password ) {
       user => {
         const cookies = new Cookies();
         var headers = parseHeaders( cookies );
-        cookies.set( 'sgUser', user.data.uid, { path: '/' } );
+        cookies.set( 'sgUser', headers, { path: '/' } );
         return bundleUserData( user, headers );
       }
     ).
@@ -56,8 +57,24 @@ export function signUp( email, password, passwordConfirmation ) {
       user => {
         const cookies = new Cookies();
         var headers = parseHeaders( cookies );
-        cookies.set( 'sgUser', user.data.uid, { path: '/' } );
         return bundleUserData( user, headers );
+      }
+    ).
+    catch(
+      error => {
+        console.log( error );
+      }
+    );
+};
+
+export function validateToken() {
+  return Auth.validateToken().
+    then(
+      user => {
+        const cookies = new Cookies();
+        var headers = parseHeaders( cookies );
+        user.headers = headers;
+        return user;
       }
     ).
     catch(
