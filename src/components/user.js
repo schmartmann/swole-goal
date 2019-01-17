@@ -1,33 +1,38 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import Navigation from './navigation';
-import { getUser, postUser } from '../actions/user';
+import { requireAuth } from '../actions/auth';
+import { postUser } from '../actions/user';
+
+const DEFAULT_STATE = {
+  loading: true,
+  user: {
+    name: '',
+    email: '',
+    uuid: null
+  },
+  errors: {
+    name: false,
+    email: false
+  },
+  message: ''
+};
 
 class User extends Component {
-  constructor() {
-    super();
-
-    this.state = {
-      user: {
-        name: '',
-        email: ''
-      },
-      errors: {
-        name: false,
-        email: false
-      },
-      message: ''
-    };
-
-    this.handleChange = this.handleChange.bind( this );
-    this.handleSubmit = this.handleSubmit.bind( this );
-  };
+  state = DEFAULT_STATE;
 
   componentDidMount() {
-    this.setState(
-      {
-        user: this.props.user
-      }
-    )
+    requireAuth().
+      then(
+        user => {
+          var newState = this.state;
+          newState.user = user;
+          newState.loading = false;
+          this.setState( newState );
+        }
+      ).catch(
+        error => console.log( error )
+      );
   };
 
   handleChange( event ) {
@@ -101,26 +106,38 @@ class User extends Component {
   };
 
   render() {
-    return(
-      <div className="component-main">
-        <Navigation/>
-        <form className="form existing-user" name="existingUser" onSubmit={ this.handleSubmit }>
-          <label>Update Account Info</label>
-          <span className="success">{ this.state.message }</span>
-          <div className="form-field">
-            <label htmlFor="email">Name</label>
-            <input type="text" value={ this.state.user.name } name="name" onChange={ this.handleChange }/>
+    const { user, errors, loading } = this.state;
+
+    if ( !loading ) {
+      if ( user.uuid ) {
+        return(
+          <div className="component-main">
+            <Navigation/>
+            <form className="form existing-user" name="existingUser" onSubmit={ this.handleSubmit.bind( this ) }>
+              <label>Update Account Info</label>
+              <span className="success">{ this.state.message }</span>
+              <div className="form-field">
+                <label htmlFor="email">Name</label>
+                <input type="text" value={ this.state.user.name } name="name" onChange={ this.handleChange.bind( this ) }/>
+              </div>
+              <div className="form-field">
+                <label htmlFor="email">Email</label>
+                <input type="text" value={ this.state.user.email } name="email" onChange={ this.handleChange.bind( this ) }/>
+              </div>
+              <div className="form-field">
+                <button type="submit">Submit</button>
+              </div>
+            </form>
           </div>
-          <div className="form-field">
-            <label htmlFor="email">Email</label>
-            <input type="text" value={ this.state.user.email } name="email" onChange={ this.handleChange }/>
-          </div>
-          <div className="form-field">
-            <button type="submit">Submit</button>
-          </div>
-        </form>
-      </div>
-    )
+        );
+      }
+      else if ( !user.uuid ) {
+        return( <Redirect to="/register" /> );
+      }
+    }
+    else if ( loading ) {
+      return null;
+    }
   }
 };
 
