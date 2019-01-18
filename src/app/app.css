@@ -82,7 +82,16 @@ body {
 }
 
 .authentication-container .auth-switch {
+  width: 200px;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-end;
+  align-items: baseline;
   color: lightgrey;
+}
+
+.authentication-container .auth-switch span {
+  margin-left: 8px;
 }
 
 .authentication-container .auth-switch .hoverable {
@@ -236,6 +245,13 @@ body {
 .form-field.exercise {
   width: 100%;
   overflow: hide;
+}
+
+.form-field .error {
+  margin-top: 4px;
+  color: red;
+  font-size: 10px;
+  align-self: flex-start;
 }
 
 .form.new-workout .exercises-container {

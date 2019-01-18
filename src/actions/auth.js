@@ -21,6 +21,7 @@ Auth.configure(
     }
   }
 );
+
 export const signIn = ( user, password ) => {
   return new Promise(
     ( resolve, reject ) => {
@@ -36,6 +37,7 @@ export const signIn = ( user, password ) => {
             const cookies = new Cookies();
             var headers = parseHeaders( cookies );
             user = bundleUserData( user, headers );
+
             resolve( user );
           }
         ).
@@ -46,12 +48,13 @@ export const signIn = ( user, password ) => {
   );
 };
 
-export const signUp = ( email, password, passwordConfirmation ) => {
+export const signUp = ( email, name, password, passwordConfirmation ) => {
   return new Promise(
     ( resolve, reject ) => {
 
       var params = {
         email: email,
+        name: name,
         password: password,
         password_confirmation: passwordConfirmation
       };
@@ -62,6 +65,7 @@ export const signUp = ( email, password, passwordConfirmation ) => {
             const cookies = new Cookies();
             var headers = parseHeaders( cookies );
             user = bundleUserData( user, headers );
+
             resolve( user );
           }
         ).
@@ -78,16 +82,11 @@ export const requireAuth = () => {
       return Auth.validateToken().
         then(
           user => {
-            if ( user ) {
-              const cookies = new Cookies();
-              var headers = parseHeaders( cookies );
-              user.headers = headers;
+            const cookies = new Cookies();
+            var headers = parseHeaders( cookies );
+            user.headers = headers;
 
-              resolve( user );
-            }
-            else {
-              reject( user );
-            }
+            resolve( user );
           }
         ).
         catch(
@@ -97,10 +96,9 @@ export const requireAuth = () => {
   );
 };
 
-
 function parseHeaders( cookies ) {
   return cookies.get( 'authHeaders' );
-}
+};
 
 function bundleUserData( user, headers ) {
   user.data.headers = {};

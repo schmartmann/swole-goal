@@ -42,21 +42,29 @@ class Workouts extends Component {
   componentWillMount() {
     requireAuth().
       then(
-        user => getWorkouts( user )
+        user => {
+          console.log( user );
+          return getWorkouts( user )
+        }
       ).
       then(
         results => {
-          this.setState(
-            {
-              user: results[ 0 ],
-              workouts: results[ 1 ],
-              loading: false
-            }
-          );
+          if ( results ) {
+            this.setState(
+              {
+                user: results[ 0 ],
+                workouts: results[ 1 ],
+                loading: false
+              }
+            );
+          }
         }
       ).
       catch(
-        error => console.log( error )
+        error => {
+          console.log( error );
+          this.setState( { loading: false } );
+        }
       );
   };
 

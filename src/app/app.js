@@ -15,7 +15,7 @@ const App = () => {
   return(
     <Router>
       <div className="app-container">
-        <Route exact path="/"   exact component={ Landing } />
+        <Route path="/" exact  exact component={ Landing } />
         <Route path="/register" exact component={ Register } />
         <Route path="/workouts" exact component={ Workouts } />
         <Route path="/workout"  exact component={ WorkoutBuilder } />

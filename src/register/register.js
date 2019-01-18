@@ -1,25 +1,50 @@
 import React, { Component } from 'react';
-import { Switch, Redirect, Route, Link, withRouter } from 'react-router-dom';
-import { requireAuth } from '../actions/auth';
-import Authentication from './authentication';
+import { Redirect } from 'react-router-dom';
+import AuthComponentSwitch from './authComponentSwitch';
+import ExistingUserForm from '../components/forms/existingUserForm';
+import NewUserForm from '../components/forms/newUserForm';
+
+import { requireAuth, signIn, signUp } from '../actions/auth';
+
+const formErrors = ( errors ) => {
+  return Object.keys( errors ).length  > 0 ;
+};
+
+const DEFAULT_STATE = {
+  newUser: false,
+  loggedIn: false
+};
 
 class Register extends Component {
-  state = { user: null }
+  state = DEFAULT_STATE;
 
   componentWillMount() {
     requireAuth().
       then(
-        user => this.setState( { user: user } )
+        user => this.setState( { loggedIn: true } )
       ).
       catch(
-        error => console.log( error )
+        error => error
       );
   }
+
+  toggleComponent() {
+    var newState = this.state;
+    newState.newUser = !newState.newUser;
+    this.setState( newState );
+  };
+
   render() {
-    if ( !this.state.user ) {
+    const { loggedIn, newUser, user, errors } = this.state;
+
+    if ( !loggedIn ) {
       return(
         <div className="component-main">
-          <Authentication/>
+          <div className="authentication-container">
+            <AuthComponentSwitch newUser={ newUser } toggleComponent={ this.toggleComponent.bind( this ) } />
+            <NewUserForm newUser={ newUser } />
+            <ExistingUserForm newUser={ newUser } />
+          </div>
         </div>
       )
     } else {
