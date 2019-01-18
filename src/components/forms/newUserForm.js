@@ -66,11 +66,7 @@ class NewUserForm extends Component {
               user.password,
               user.passwordConfirmation
             ).then(
-              user => {
-                if ( user ) {
-                  this.props.setLoggedIn( user );
-                }
-              }
+              user => this.props.setUser( user )
             ).catch(
               error => {
                 console.log( error );

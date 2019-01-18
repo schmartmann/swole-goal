@@ -54,9 +54,7 @@ class ExistingUserForm extends Component {
               user.email,
               user.password,
             ).then(
-              user => {
-                this.props.setLoggedIn( user );
-              }
+              user => this.props.setUser( user )
             ).catch(
               error => {
                 this.setState( DEFAULT_STATE );

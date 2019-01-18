@@ -12,7 +12,7 @@ const formErrors = ( errors ) => {
 
 const DEFAULT_STATE = {
   newUser: false,
-  loggedIn: false
+  user: null
 };
 
 class Register extends Component {
@@ -21,11 +21,29 @@ class Register extends Component {
   componentWillMount() {
     requireAuth().
       then(
-        user => this.setState( { loggedIn: true } )
+        user => {
+          // if method returns user, consider user logged in
+          if ( user ) {
+            this.setState( { user: user } );
+            this.props.history.push( '/workouts' );
+          }
+        }
       ).
       catch(
         error => error
       );
+  }
+
+  componentDidUpdate( prevProps, prevState ) {
+    const { user } = this.state;
+
+    if ( user ) {
+      this.props.history.push( '/workouts' );
+    }
+  }
+
+  setUser( user ) {
+    this.setState( { user: user } );
   }
 
   toggleComponent() {
@@ -34,26 +52,18 @@ class Register extends Component {
     this.setState( newState );
   };
 
-  setLoggedIn( user ) {
-    this.setState( { loggedIn: true } );
-  };
-
   render() {
-    const { loggedIn, newUser, user, errors } = this.state;
+    const { newUser, user, errors } = this.state;
 
-    if ( !loggedIn ) {
-      return(
-        <div className="component-main">
-          <div className="authentication-container">
-            <AuthComponentSwitch newUser={ newUser } toggleComponent={ this.toggleComponent.bind( this ) } />
-            <NewUserForm newUser={ newUser } setLoggedIn={ this.setLoggedIn.bind( this ) } />
-            <ExistingUserForm newUser={ newUser } setLoggedIn={ this.setLoggedIn.bind( this ) } />
-          </div>
+    return(
+      <div className="component-main">
+        <div className="authentication-container">
+          <AuthComponentSwitch newUser={ newUser } toggleComponent={ this.toggleComponent.bind( this ) } />
+          <NewUserForm newUser={ newUser } setUser={ this.setUser.bind( this ) } />
+          <ExistingUserForm newUser={ newUser } setUser={ this.setUser.bind( this ) } />
         </div>
-      )
-    } else {
-      return( <Redirect to="/workouts"/> );
-    }
+      </div>
+    );
   }
 };
 

@@ -7,10 +7,10 @@ Auth.configure(
   {
     apiUrl: ROOT_URL,
     passwordReserSuccessUrl: function() {
-      return `${ ROOT_URL }/pass`;
+      return window.location.href;
     },
     confirmationSuccessUrl: function() {
-      return `${ ROOT_URL }/pass`;
+      return window.location.href;
     },
     tokenFormat: {
       "access-token": "{{ access-token }}",
