@@ -35,7 +35,7 @@ class Register extends Component {
   };
 
   setLoggedIn( user ) {
-    debugger
+    this.setState( { loggedIn: true } );
   };
 
   render() {
