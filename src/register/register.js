@@ -34,6 +34,10 @@ class Register extends Component {
     this.setState( newState );
   };
 
+  setLoggedIn( user ) {
+    debugger
+  };
+
   render() {
     const { loggedIn, newUser, user, errors } = this.state;
 
@@ -42,8 +46,8 @@ class Register extends Component {
         <div className="component-main">
           <div className="authentication-container">
             <AuthComponentSwitch newUser={ newUser } toggleComponent={ this.toggleComponent.bind( this ) } />
-            <NewUserForm newUser={ newUser } />
-            <ExistingUserForm newUser={ newUser } />
+            <NewUserForm newUser={ newUser } setLoggedIn={ this.setLoggedIn.bind( this ) } />
+            <ExistingUserForm newUser={ newUser } setLoggedIn={ this.setLoggedIn.bind( this ) } />
           </div>
         </div>
       )

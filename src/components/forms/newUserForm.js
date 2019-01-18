@@ -67,9 +67,9 @@ class NewUserForm extends Component {
               user.passwordConfirmation
             ).then(
               user => {
-                var newState = this.state;
-                newState.user = user;
-                this.setState( newState );
+                if ( user ) {
+                  this.props.setLoggedIn( user );
+                }
               }
             ).catch(
               error => {
