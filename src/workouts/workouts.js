@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import Navigation from '../components/navigation';
+import Gateway from '../components/gateway';
 import Workout from '../workout/workout';
 import { requireAuth } from '../actions/auth';
 import { getWorkouts } from '../actions/workouts';
@@ -12,15 +13,17 @@ const workoutsView = ( workouts ) => {
     "You don't have any workouts yet! Click 'Create Workout' to get started"
 
   return(
-    <div className="component-main">
-      <Navigation/>
-      <div className="workouts-container">
-        <span className="section-title">
-          { copy }
-        </span>
-        { renderWorkouts( workouts ) }
+    <Gateway>
+      <div className="component-main">
+        <Navigation/>
+        <div className="workouts-container">
+          <span className="section-title">
+            { copy }
+          </span>
+          { renderWorkouts( workouts ) }
+        </div>
       </div>
-    </div>
+    </Gateway>
   );
 };
 
@@ -40,6 +43,7 @@ class Workouts extends Component {
   state = { user: null, workouts: [], loading: true };
 
   componentWillMount() {
+    debugger
     requireAuth().
       then(
         user => {

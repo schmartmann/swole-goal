@@ -20,6 +20,7 @@ class User extends Component {
   state = DEFAULT_STATE;
 
   componentDidMount() {
+    console.log( "USER COMPONENT" );
     requireAuth().
       then(
         user => {

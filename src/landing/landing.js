@@ -18,6 +18,7 @@ class Landing extends Component {
   state = { user: null };
 
   componentWillMount() {
+    console.log( 'LANDING COMPONENT' );
     requireAuth().
       then(
         user => this.setState( { user: user } )

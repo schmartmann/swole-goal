@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Cookies from 'universal-cookie';
 import { Redirect } from 'react-router-dom';
 import AuthComponentSwitch from './authComponentSwitch';
 import ExistingUserForm from '../components/forms/existingUserForm';
@@ -19,6 +20,7 @@ class Register extends Component {
   state = DEFAULT_STATE;
 
   componentWillMount() {
+    console.log( "REGISTER COMPONENT" );
     requireAuth().
       then(
         user => {
@@ -36,8 +38,10 @@ class Register extends Component {
 
   componentDidUpdate( prevProps, prevState ) {
     const { user } = this.state;
+    const cookies = new Cookies();
+    var headers = cookies.get( 'authHeaders' );
 
-    if ( user ) {
+    if ( user && headers ) {
       this.props.history.push( '/workouts' );
     }
   }

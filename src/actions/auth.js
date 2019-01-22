@@ -3,24 +3,36 @@ import Auth from 'j-toker'
 
 const ROOT_URL = 'http://localhost:3001'
 
-Auth.configure(
-  {
-    apiUrl: ROOT_URL,
-    passwordReserSuccessUrl: function() {
-      return window.location.href;
-    },
-    confirmationSuccessUrl: function() {
-      return window.location.href;
-    },
-    tokenFormat: {
-      "access-token": "{{ access-token }}",
-      "token-type":   "Bearer",
-      client:         "{{ client }}",
-      expiry:         "{{ expiry }}",
-      uid:            "{{ uid }}"
+function configureAuth() {
+  return new Promise(
+    ( resolve, reject ) => {
+      var config = {
+        apiUrl: ROOT_URL,
+        passwordReserSuccessUrl: function() {
+          return window.location.href;
+        },
+        confirmationSuccessUrl: function() {
+          return window.location.href;
+        },
+        tokenFormat: {
+          "access-token": "{{ access-token }}",
+          "token-type":   "Bearer",
+          client:         "{{ client }}",
+          expiry:         "{{ expiry }}",
+          uid:            "{{ uid }}"
+        }
+      };
+
+      Auth.configure( config ).
+        then(
+          user => resolve( user )
+        ).
+        catch(
+          error => console.log( error )
+        )
     }
-  }
-);
+  )
+}
 
 export const signIn = ( user, password ) => {
   return new Promise(
@@ -79,19 +91,20 @@ export const signUp = ( email, name, password, passwordConfirmation ) => {
 export const requireAuth = () => {
   return new Promise(
     ( resolve, reject ) => {
-      return Auth.validateToken().
-        then(
-          user => {
-            const cookies = new Cookies();
-            var headers = parseHeaders( cookies );
-            user.headers = headers;
+      configureAuth().
+      then(
+        user => {
+          debugger
+          const cookies = new Cookies();
+          var headers = parseHeaders( cookies );
+          user.headers = headers;
 
-            resolve( user );
-          }
-        ).
-        catch(
-          error => reject( error )
-        );
+          resolve( user );
+        }
+      ).
+      catch(
+        error => reject( error )
+      );
     }
   );
 };

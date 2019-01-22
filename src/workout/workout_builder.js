@@ -78,6 +78,7 @@ class WorkoutBuilder extends Component {
   state = DEFAULT_STATE;
 
   componentWillMount() {
+    console.log( "USER COMPONENT" );
     requireAuth().
       then(
         user => getExercises( user )
